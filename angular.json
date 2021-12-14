@@ -3,5 +3,37 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    "ngx-caching": {
+      "projectType": "library",
+      "root": "projects/ngx-caching",
+      "sourceRoot": "projects/ngx-caching/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-caching/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-caching/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-caching/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-caching/src/test.ts",
+            "tsConfig": "projects/ngx-caching/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-caching/karma.conf.js"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngx-caching"
 }
