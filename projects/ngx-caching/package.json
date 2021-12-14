@@ -1,8 +1,8 @@
 {
   "name": "ngx-caching",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "scripts": {
-    "package": "ng-packagr -p ng-package.json"
+    "pack": "ng-packagr -p ng-package.json"
   },
   "peerDependencies": {
     "@angular/common": "^13.0.0",
