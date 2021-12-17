@@ -13,16 +13,29 @@ export class HttpCacheService {
     this.mappedRequest = new Map<string, Subject<any>>();
   }
 
-  get<T>(url: string, options: any = ''): Observable<T>|any{
+  get<T>(url: string, options: any = ''): Observable<T> | any {
     const search = url + options;
-    if(this.isCached(search)) {
+    if (this.isCached(search)) {
       return this.mappedRequest?.get(search)?.asObservable();
     }
     this.mappedRequest.set(search, new Subject());
 
-    this.http.get<T>(url, {headers: {
+    this.http.get<T>(url, options).subscribe(data => {
+      this.mappedRequest.get(search)?.next(data);
+      this.cacheService.set(search, data, true);
+      this.replaceSubject(search, data);
+    })
+    return this.mappedRequest?.get(search)?.asObservable();
+  }
 
-      }}).subscribe(data => {
+  post<T>(url: string, body: any, options: any): Observable<T> | any {
+    const search = url + options;
+    if (this.isCached(search)) {
+      return this.mappedRequest?.get(search)?.asObservable();
+    }
+    this.mappedRequest.set(search, new Subject());
+
+    this.http.post<T>(url, body, options).subscribe(data => {
       this.mappedRequest.get(search)?.next(data);
       this.cacheService.set(search, data, true);
       this.replaceSubject(search, data);
@@ -31,10 +44,10 @@ export class HttpCacheService {
   }
 
   private isCached(url: string): boolean {
-    if(this.mappedRequest.has(url))
+    if (this.mappedRequest.has(url))
       return true;
-    const cachedItem = this.cacheService.get(url,true);
-    if(isNotNullOrUndefined(cachedItem)){
+    const cachedItem = this.cacheService.get(url, true);
+    if (isNotNullOrUndefined(cachedItem)) {
       this.mappedRequest.set(url, new BehaviorSubject(cachedItem));
       return true;
     }
@@ -43,9 +56,9 @@ export class HttpCacheService {
 
   private replaceSubject(search: string, data: any) {
     const oldSubject = this.mappedRequest.get(search);
-    const observers =  oldSubject?.observers;
+    const observers = oldSubject?.observers;
     const newSubject = new BehaviorSubject(data);
-    if((observers))
+    if ((observers))
       newSubject.observers = observers;
     this.mappedRequest.set(search, newSubject);
   }
