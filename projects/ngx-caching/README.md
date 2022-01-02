@@ -1,24 +1,54 @@
-# NgxCaching
+### ngx-utils
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.0.
+Angular library that enables developer accessible browser caching by providing a CacheService and a HttpCacheService.
 
-## Code scaffolding
 
-Run `ng generate component component-name --project ngx-caching` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-caching`.
-> Note: Don't forget to add `--project ngx-caching` or else it will be added to the default project in your `angular.json` file. 
+## 📝 Table of Contents
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Deployment](#deployment)
+- [Usage](#usage)
+- [Built Using](#built_using)
+- [TODO](../TODO.md)
+- [Contributing](../CONTRIBUTING.md)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
 
-## Build
+## 🧐 About <a name = "about"></a>
 
-Run `ng build ngx-caching` to build the project. The build artifacts will be stored in the `dist/` directory.
+This Angular library provides two services:
+ - CacheService: which interacts directly with the browser local/session storage
+ - HttpCacheService: which is a wrapper(decorator) around Angular HttpClient that offers the ability to cache any request that you want to (including post request) and offers the results as a Observable of the desired type, exactly as HttpClient.
 
-## Publishing
+## 🏁 Getting Started <a name = "getting_started"></a>
+To use this library you should have at least Angular 13. Installation of this library can be done using the following commands, depending on your package manager.
 
-After building your library with `ng build ngx-caching`, go to the dist folder `cd dist/ngx-caching` and run `npm publish`.
+- npm: ```npm i ngx-caching```
+- yarn ```yarn add ngx-caching```
 
-## Running unit tests
+## 🎈 Usage <a name="usage"></a>
 
-Run `ng test ngx-caching` to execute the unit tests via [Karma](https://karma-runner.github.io).
+The following is a basic usage example of the HttpCacheService:
 
-## Further help
+```typescript
+...
+import {HttpCacheService} from "ngx-caching";
+...
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+constructor(private configService: ConfigService, private httpCached: HttpCacheService) { }
+
+getValuesByType(typeId: number):Observable<any> {
+ return this.httpCached.get(this.configService.getPath('dictionary', 'entries', {typeId}));
+}
+```
+In the above example, the values that will be retrieved will also be cached, so any subsequent subscription to this method will result in a cache look-up rather than another HTTP request.
+
+
+## ⛏️ Built Using <a name = "built_using"></a>
+- [RxJS](https://rxjs.dev/) - Reactive Extensions Library for JavaScript
+- [Angular CLI](https://angular.io/cli) - Angular command line interface
+- [Visual Studio Code](https://code.visualstudio.com/) - code editor
+
+
+## ✍️ Authors <a name = "authors"></a>
+- [@gabriel-rusu](https://github.com/gabriel-rusu) - Idea & Initial work

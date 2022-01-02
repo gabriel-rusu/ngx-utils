@@ -1,27 +1,69 @@
-<h1 align="center">ngx-utils</h1>
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px height=200px src="./projects/ngx-caching/assets/browser-settings.png" alt="Project logo"></a>
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.3.
+<h3 align="center">ngx-utils</h3>
 
-## Development server
+<div align="center">
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
-## Code scaffolding
+</div>
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+<p align="center"> 
+Angular library that enables developer accessible browser caching by providing a CacheService and a HttpCacheService.
+    <br> 
+</p>
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 📝 Table of Contents
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Deployment](#deployment)
+- [Usage](#usage)
+- [Built Using](#built_using)
+- [TODO](../TODO.md)
+- [Contributing](../CONTRIBUTING.md)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
 
-## Running unit tests
+## 🧐 About <a name = "about"></a>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+This Angular library provides two services:
+ - CacheService: which interacts directly with the browser local/session storage
+ - HttpCacheService: which is a wrapper(decorator) around Angular HttpClient that offers the ability to cache any request that you want to (including post request) and offers the results as a Observable of the desired type, exactly as HttpClient.
 
-## Running end-to-end tests
+## 🏁 Getting Started <a name = "getting_started"></a>
+To use this library you should have at least Angular 13. Installation of this library can be done using the following commands, depending on your package manager.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- npm: ```npm i ngx-caching```
+- yarn ```yarn add ngx-caching```
 
-## Further help
+## 🎈 Usage <a name="usage"></a>
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+The following is a basic usage example of the HttpCacheService:
+
+```typescript
+...
+import {HttpCacheService} from "ngx-caching";
+...
+
+constructor(private configService: ConfigService, private httpCached: HttpCacheService) { }
+
+getValuesByType(typeId: number):Observable<any> {
+ return this.httpCached.get(this.configService.getPath('dictionary', 'entries', {typeId}));
+}
+```
+In the above example, the values that will be retrieved will also be cached, so any subsequent subscription to this method will result in a cache look-up rather than another HTTP request.
+
+
+## ⛏️ Built Using <a name = "built_using"></a>
+- [RxJS](https://rxjs.dev/) - Reactive Extensions Library for JavaScript
+- [Angular CLI](https://angular.io/cli) - Angular command line interface
+- [Visual Studio Code](https://code.visualstudio.com/) - code editor
+
+
+## ✍️ Authors <a name = "authors"></a>
+- [@gabriel-rusu](https://github.com/gabriel-rusu) - Idea & Initial work
+
